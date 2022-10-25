@@ -2,6 +2,7 @@
 ;; Use Character/isLetter
 
 (defn- alpha? [c]
+  ;; #util
   (let [x (int c)]
     (or (and (>= x 97)
              (<= x 122))
