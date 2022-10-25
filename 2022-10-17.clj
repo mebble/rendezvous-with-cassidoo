@@ -46,7 +46,7 @@
   (->> (range)
        (map (constantly x))))
 
-(defn- check-door-2 [pass [i door-state]]
+(defn- check-door-2 [[pass [i door-state]]]
 
   (let [new-door-state (if (div-by? pass i)
                          (door-state {:closed :open
@@ -59,10 +59,8 @@
        (range)
        (map (constantly :closed))
        (enumerate 1)
-       (map (fn [pass x] [pass x])
-            (range-constantly 1))
-       (iterate (fn [xs] (map (fn [[pass x]] (check-door-2 pass x))
-                              xs)))
+       (map vector (range-constantly 1))
+       (iterate (fn [app-state] (map check-door-2 app-state)))
        (take (inc num-passes))
        (last)
        (filter (fn [[_ [_ door-state]]] (= :open door-state)))
