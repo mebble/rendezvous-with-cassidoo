@@ -11,6 +11,11 @@
                    (map-indexed vector)
                    (map (fn [[i x]] [(+ start i) x])))))
 
+(defn- range-constantly [x]
+  ;; #util
+  (->> (range)
+       (map (constantly x))))
+
 (defn- check-door [pass [i door-state]]
   (if (div-by? pass i)
     (door-state {:closed :open
@@ -22,9 +27,8 @@
    (pass-doors-1 num-doors
                num-passes
                1
-               (->> num-doors
-                    (range)
-                    (map (constantly :closed)))))
+               (->> (range-constantly :closed)
+                    (take num-doors))))
   ([_ num-passes pass doors]
    (if (> pass num-passes)
      (->> doors
@@ -41,11 +45,6 @@
 
 ;; -------------------------------
 
-(defn- range-constantly [x]
-  ;; #util
-  (->> (range)
-       (map (constantly x))))
-
 (defn- check-door-2 [[pass [i door-state]]]
 
   (let [new-door-state (if (div-by? pass i)
@@ -55,9 +54,8 @@
     (vector (inc pass) [i new-door-state])))
 
 (defn pass-doors-2 [num-doors num-passes]
-  (->> num-doors
-       (range)
-       (map (constantly :closed))
+  (->> (range-constantly :closed)
+       (take num-doors)
        (enumerate 1)
        (map vector (range-constantly 1))
        (iterate (fn [app-state] (map check-door-2 app-state)))
