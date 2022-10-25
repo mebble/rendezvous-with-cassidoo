@@ -17,9 +17,9 @@
                  :open   :closed})
     door-state))
 
-(defn pass-doors
+(defn pass-doors-1
   ([num-doors num-passes]
-   (pass-doors num-doors
+   (pass-doors-1 num-doors
                num-passes
                1
                (->> num-doors
@@ -36,5 +36,38 @@
           (recur _ num-passes (inc pass))))))
 
 (let [n 7]
-  (assert (= 4 (pass-doors n 3)))
-  (assert (= 5 (pass-doors n 4))))
+  (assert (= 4 (pass-doors-1 n 3)))
+  (assert (= 5 (pass-doors-1 n 4))))
+
+;; -------------------------------
+
+(defn- range-constantly [x]
+  ;; #util
+  (->> (range)
+       (map (constantly x))))
+
+(defn- check-door-2 [pass [i door-state]]
+
+  (let [new-door-state (if (div-by? pass i)
+                         (door-state {:closed :open
+                                      :open   :closed})
+                         door-state)]
+    (vector (inc pass) [i new-door-state])))
+
+(defn pass-doors-2 [num-doors num-passes]
+  (->> num-doors
+       (range)
+       (map (constantly :closed))
+       (enumerate 1)
+       (map (fn [pass x] [pass x])
+            (range-constantly 1))
+       (iterate (fn [xs] (map (fn [[pass x]] (check-door-2 pass x))
+                              xs)))
+       (take (inc num-passes))
+       (last)
+       (filter (fn [[_ [_ door-state]]] (= :open door-state)))
+       (count)))
+
+(let [n 7]
+  (assert (= 4 (pass-doors-2 n 3)))
+  (assert (= 5 (pass-doors-2 n 4))))
