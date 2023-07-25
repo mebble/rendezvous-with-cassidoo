@@ -35,6 +35,7 @@
          (s/join))))
 
 (defn- pad-end
+  ;; #util
   "Pad a string s with the character c till the output becomes n characters long"
   ;; https://stackoverflow.com/questions/27262268/idiom-for-padding-sequences
   [c n s]
