@@ -1,4 +1,5 @@
 ;; https://buttondown.email/cassidoo/archive/the-thermometer-of-success-is-merely-the-jealousy/
+;; https://twitter.com/cassidoo/status/1683320948953415682
 
 (defn pairing [n xs]
   (map #(vector n %) xs))
