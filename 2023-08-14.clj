@@ -2,8 +2,7 @@
   (contains? #{\a \e \i \o \u \y} c))
 
 (defn faulty-keeb [s]
-  (let [append? (atom true)
-        num-vowels (atom 0)]
+  (let [append? (atom true)]
     (->> (loop [result ""
                 s s]
            (if (empty? s)
@@ -12,13 +11,12 @@
                    xs (rest s)]
                (cond
                  (vowel? c) (do (swap! append? not)
-                                (swap! num-vowels inc)
                                 (recur result xs))
                  @append?   (recur (str result c) xs)
                  :else      (recur (str c result) xs)))))
-         (#(if (odd? @num-vowels)
-             (reverse %)
-             %))
+         (#(if @append?
+             %
+             (reverse %)))
          (apply str))))
 
 (assert (= "rtsng" (faulty-keeb "string")))
