@@ -7,7 +7,7 @@
 (def is-consonant? (complement is-vowel?))
 
 (defn capital-after-vowel [string]
-  (->> (cons "" string)  ;; #pattern - look behind 
+  (->> (cons "" string)  ;; #util #pattern - look behind 
        (map vector string)
        (map (fn [[c c-prev]]
               (if (and (is-consonant? c)

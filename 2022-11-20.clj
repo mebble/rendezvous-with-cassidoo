@@ -3,7 +3,7 @@
 
 (defn vertical-slashes
   [slashes]
-  (->> (cons nil slashes)  ;; #pattern - look behind
+  (->> (cons nil slashes)  ;; #util #pattern - look behind
        (map vector slashes)
        (reductions (fn [[_ spaces] [s s-prev]]
                      (case [s-prev s]

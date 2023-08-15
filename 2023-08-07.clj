@@ -1,6 +1,8 @@
 ;; https://buttondown.email/cassidoo/archive/it-isnt-the-mountains-ahead-to-climb-that-wear/
 ;; https://twitter.com/cassidoo/status/1688379699083288576
 
+;; https://stackoverflow.com/q/72768/5811761
+
 (defn digit-seq [n]
   ;; #util
   (->> n
