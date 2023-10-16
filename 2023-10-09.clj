@@ -34,7 +34,8 @@
 (def unit->num {"One" 1 "Two" 2 "Three" 3 "Four" 4 "Five" 5 "Six" 6 "Seven" 7 "Eight" 8 "Nine" 9})
 (defn base->num [[f s]]
   (if (nil? s)
-    (or (teen->num f)
+    (or (ty->num f)
+        (teen->num f)
         (unit->num f))
     (+ (ty->num f)
        (unit->num s))))
@@ -53,9 +54,10 @@
   (places-to-number (place-words-map (s/split words #" "))))
 
 (assert (= 123 (parse-number "One Hundred Twenty Three")))  ;; simple
-(assert (= 12345 (parse-number "Twelve Thousand Three Hundred Forty Five")))  ;; simple
+(assert (= 12345 (parse-number "Twelve Thousand Three Hundred Forty Five")))  ;; ends in unit
+(assert (= 12340 (parse-number "Twelve Thousand Three Hundred Forty")))  ;; ends in ty
+(assert (= 12316 (parse-number "Twelve Thousand Three Hundred Sixteen")))  ;; ends in teen
 (assert (= 45045 (parse-number "Forty Five Thousand Forty Five")))  ;; multiple parts in thousands place
-(assert (= 16503 (parse-number "Sixteen Thousand Five Hundred Three")))  ;; simple
-(assert (= 16503 (parse-number "Twelve Thousand Forty Five Hundred Three")))  ;; unconventional wording, equal to the above simple case
 (assert (= 345035 (parse-number "Three Hundred Forty Five Thousand Thirty Five")))  ;; hundreds within thousands place
 (assert (= 345000035 (parse-number "Three Hundred Forty Five Million Thirty Five")))  ;; hundreds within millions place
+(assert (= 16503 (parse-number "Twelve Thousand Forty Five Hundred Three")))  ;; unconventional wording
