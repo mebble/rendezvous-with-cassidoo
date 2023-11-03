@@ -32,9 +32,21 @@
   (when-let [i (split-idx digits)]
     (split-at i digits)))
 
+(defn- next-larger-idx [n xs]
+  (->> xs
+       (map-indexed vector)
+       (reduce (fn [[ai a] [xi x]]
+                 (cond
+                   (<= x n) [ai a]
+                   (< x a)  [xi x]
+                   :else    [ai a])))
+       (first)))
+
 (defn- permutate [digits]
-  (let [[f s & xs] digits]
-    (cons s (sort (cons f xs)))))
+  (let [[f & xs] digits
+        i (next-larger-idx f xs)
+        [fs [x & ys]] (split-at i xs)]
+    (cons x (sort (cons f (concat fs ys))))))
 
 (defn lexo-next [n]
   (when-let [[preserved-seq permutate-seq] (split (digit-seq n))]
@@ -45,4 +57,5 @@
 (assert (nil? (lexo-next 21))) ;; gets smaller
 (assert (= 132 (lexo-next 123))) ;; permutate last two
 (assert (= 314195 (lexo-next 314159))) ;; permutate last two
-(assert (= 315124 (lexo-next 314521))) ;; permutate many
+(assert (= 315124 (lexo-next 314521))) ;; permutate many, swap adjacent
+(assert (= 2412335 (lexo-next 2354321))) ;; permutate many, swap non-adjacent
