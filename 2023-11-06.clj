@@ -10,24 +10,11 @@
   (* (count word)
      (reduce + (map scores word))))
 
-(defn- max-key-multiple [k xs]
-  (reduce (fn [maxes x]
-            (if-let [f (first maxes)]
-              (let [kx (k x)
-                    kf (k f)]
-                (cond
-                  (> kx kf) [x]
-                  (= kx kf) (cons x maxes)
-                  :else     maxes))
-              [x]))
-          []
-          xs))
-
 (defn score-word-game [words scores]
   (->> words
-       (max-key-multiple (partial word-score scores))
        (sort)
-       (first)))
+       (reverse)
+       (apply max-key (partial word-score scores))))
 
 (assert (= "cherry" (score-word-game ["apple" "banana" "cherry" "date" "fig"] letter-scores)))
 (assert (= "evil" (score-word-game ["live" "evil" "vile"] letter-scores)))
