@@ -10,14 +10,20 @@
 
 (def duration (comp :duration second))
 
+(defn- running-durations [task-pairs]
+  (drop 1 (reductions (fn [running-dur pair] (+ running-dur (duration pair)))
+               0
+               task-pairs)))
+
 (defn do-tasks [tasks time-to-work]
-  (let [time-available (atom time-to-work)]
-    (->> tasks
-         (map-indexed vector)
-         (sort-by duration)
-         (take-while (fn [x] (let [t @time-available]
-                               (when (<= (duration x) t)
-                                 (swap! time-available dec)))))
+  (let [sorted-task-pairs (->> tasks
+                               (map-indexed vector)
+                               (sort-by duration))
+        durations (running-durations sorted-task-pairs)]
+    (->> durations
+         (map vector sorted-task-pairs)
+         (take-while (fn [[_ dur]] (<= dur time-to-work)))
+         (map first)
          (sort-by first)
          (map (comp :name second)))))
 
