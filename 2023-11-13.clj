@@ -8,23 +8,29 @@
             {:name "Task 5" :duration 1}
             {:name "Task 6" :duration 3}])
 
-(def duration (comp :duration second))
+(defn- -do-tasks [tasks time-to-work]
+  (let [task (first tasks)
+        dur (:duration task)
+        remaining (rest tasks)]
+    (cond
+      (empty? tasks)       []
+      (> dur time-to-work) (-do-tasks remaining time-to-work)
+      :else                (cons task (-do-tasks remaining (- time-to-work dur))))))
 
-(defn- running-durations [task-pairs]
-  (drop 1 (reductions (fn [running-dur pair] (+ running-dur (duration pair)))
-               0
-               task-pairs)))
+(defn- do-from [tasks time-to-work]
+  (cond
+    (empty? tasks)                             []
+    (> (:duration (first tasks)) time-to-work) []
+    :else                                      (-do-tasks tasks time-to-work)))
 
 (defn do-tasks [tasks time-to-work]
-  (let [sorted-task-pairs (->> tasks
-                               (map-indexed vector)
-                               (sort-by duration))
-        durations (running-durations sorted-task-pairs)]
-    (->> durations
-         (map vector sorted-task-pairs)
-         (take-while (fn [[_ dur]] (<= dur time-to-work)))
-         (map first)
-         (sort-by first)
-         (map (comp :name second)))))
+  (->> tasks
+       (iterate (fn [ts] (rest ts)))
+       (take (count tasks))
+       (map (fn [ts] (do-from ts time-to-work)))
+       (sort-by count)
+       (last)
+       (map :name)))
 
 (assert (= ["Task 2", "Task 5", "Task 6"] (do-tasks tasks 6)))
+(assert (= ["Task 5", "Task 6"] (do-tasks tasks 4)))
