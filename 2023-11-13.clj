@@ -23,14 +23,23 @@
     (> (:duration (first tasks)) time-to-work) []
     :else                                      (-do-tasks tasks time-to-work)))
 
+(defn- count-or-duration [tasks1 tasks2]
+  (let [f (compare (count tasks1)
+                   (count tasks2))]
+    (if-not (zero? f)
+      (* -1 f)
+      (* -1 (compare (reduce + (map :duration tasks1))
+                     (reduce + (map :duration tasks2)))))))
+
 (defn do-tasks [tasks time-to-work]
   (->> tasks
        (iterate (fn [ts] (rest ts)))
        (take (count tasks))
        (map (fn [ts] (do-from ts time-to-work)))
-       (sort-by count)
-       (last)
+       (sort count-or-duration)
+       (first)
        (map :name)))
 
 (assert (= ["Task 2", "Task 5", "Task 6"] (do-tasks tasks 6)))
 (assert (= ["Task 5", "Task 6"] (do-tasks tasks 4)))
+(assert (= ["Task 2"] (do-tasks tasks 2)))
