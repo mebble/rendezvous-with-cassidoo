@@ -4,6 +4,20 @@
 ;; Run this with:
 ;; bb --classpath "$(clojure -Spath -Sdeps '{:deps {org.clojure/math.combinatorics {:mvn/version "0.2.0"}}}')" 2023-11-27.clj
 
+;; Alternative algorithm to generate subsets:
+; src: https://codepen.io/Tzyinc/pen/GRzBbYz?editors=0012
+; const xs = [200, 400, 600, 800]
+;
+; const possibleSets = [];
+; for (let i = 0; i < xs.length; i++) {
+;     possibleSets.forEach(set => {
+;         possibleSets.push([...set, i]);
+;     });
+;
+;     possibleSets.push([i]);
+; }
+; Another algo: https://codereview.stackexchange.com/questions/8930/enumerate-k-combinations-in-clojure-p26-from-99-problems
+
 (require '[clojure.math.combinatorics :as combo])
 
 (defn- combo-price [items-combo]
