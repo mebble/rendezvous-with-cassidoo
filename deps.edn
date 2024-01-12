@@ -1,4 +1,5 @@
-{:aliases
+{:deps {org.clojure/math.combinatorics {:mvn/version "0.2.0"}}
+ :aliases
  {:repl/conjure
   {:extra-deps {nrepl/nrepl       {:mvn/version "0.9.0"}
                 cider/cider-nrepl {:mvn/version "0.28.4"}
