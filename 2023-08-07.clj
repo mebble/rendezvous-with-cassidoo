@@ -4,7 +4,6 @@
 ;; https://stackoverflow.com/q/72768/5811761
 
 (defn digit-seq [n]
-  ;; #util
   (->> n
        (str)
        (map #(Integer/parseInt (str %)))))

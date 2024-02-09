@@ -45,6 +45,7 @@
               (height (:right root))))))
 
 (defn- pad [n]
+  ;; #util
   (apply str (repeat n " ")))
 
 (defn generate-parts

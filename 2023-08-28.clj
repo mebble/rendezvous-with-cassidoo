@@ -4,11 +4,9 @@
 (require '[clojure.string :refer [join]])
 
 (defn- char->int [c]
-  ;; #util
   (Integer/parseInt (str c)))
 
 (defn- digit-seq [n]
-  ;; #util
   (->> n
        (str)
        (map char->int)))
