@@ -1,4 +1,5 @@
-{:deps {org.clojure/math.combinatorics {:mvn/version "0.2.0"}}
+{:deps {org.clojure/math.combinatorics {:mvn/version "0.2.0"}
+        org.clojure/core.async {:mvn/version "1.6.681"}}
  :aliases
  {:repl/conjure
   {:extra-deps {nrepl/nrepl       {:mvn/version "0.9.0"}

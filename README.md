@@ -13,8 +13,16 @@ deno run <file>.ts
 
 ### Clojure
 
-Use [babashka](https://babashka.org/):
+Using [babashka](https://babashka.org/):
 
 ```
 bb <file>.clj
 ```
+
+Using a REPl with an nREPL server with:
+
+```
+clj -M:repl/conjure
+```
+
+Find more info [here](https://github.com/Olical/conjure/wiki/Quick-start:-Clojure)
