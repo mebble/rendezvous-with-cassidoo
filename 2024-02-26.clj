@@ -24,4 +24,5 @@
 
 (assert (= 3415926 (remove-digit 31415926 1)))
 (assert (= 231 (remove-digit 1231 1)))
+(assert (= 1211 (remove-digit 12121 2)))
 (assert (= 111 (remove-digit 111 2)))
