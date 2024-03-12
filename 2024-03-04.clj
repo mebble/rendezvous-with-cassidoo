@@ -13,10 +13,12 @@
           (>! out [state secs])
           (cond
             (> secs 0)      (recur (dec secs) state)
-            (= state :work) (recur (dec rest-duration) :rest)))))
+            (= state :work) (recur (dec rest-duration) :rest))))
+      (>! out [:done nil]))
     out))
 
 (let [timer-chan (timer 3 2 2)]
+  (println "Running tests...")
   (assert (= [:work 2] (<!! timer-chan)))
   (assert (= [:work 1] (<!! timer-chan)))
   (assert (= [:work 0] (<!! timer-chan)))
@@ -27,6 +29,7 @@
   (assert (= [:work 0] (<!! timer-chan)))
   (assert (= [:rest 1] (<!! timer-chan)))
   (assert (= [:rest 0] (<!! timer-chan)))
+  (assert (= [:done nil] (<!! timer-chan)))
   (println "Tests complete"))
 
 (defn run-timer [timer]
@@ -36,6 +39,7 @@
         (println
          (case state
            :work (str "working... " (str secs) " seconds left.")
-           :rest (str "resting... " (str secs) " seconds left.")))))))
+           :rest (str "resting... " (str secs) " seconds left.")
+           :done "All done!"))))))
 
 (run-timer (timer 3 2 2))
