@@ -9,9 +9,8 @@
        (count)))
 
 (defn compare-num-vowels [name1 name2]
-  (let [n1 (num-vowels name1)
-        n2 (num-vowels name2)]
-    (- n1 n2)))
+  (- (num-vowels name1)
+     (num-vowels name2)))
 
 (defn compare-names [name1 name2]
   (let [x (compare-num-vowels name1 name2)]
