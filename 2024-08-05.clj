@@ -1,3 +1,6 @@
+;; https://buttondown.email/cassidoo/archive/fff/
+;; https://x.com/cassidoo/status/1820340599301578861
+
 (defn- sq [x] (* x x))
 
 (defn squares [n]
